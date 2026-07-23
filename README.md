@@ -61,7 +61,7 @@ The stylesheet is served by the application at:
 	- **Runtime:** Python 3
 	- **Build Command:** `pip install -r requirements.txt`
 	- **Start Command:** `gunicorn app:app`
-5. Click **Deploy Web Service**.
+5. Click **Deploy Web Service**.link https://cgpa-calculator-frbv.onrender.com/
 
 Render will provide a public HTTPS URL, for example:
 
