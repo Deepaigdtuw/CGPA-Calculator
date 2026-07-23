@@ -12,11 +12,30 @@ def style():
 @app.route("/body.html", methods=["GET", "POST"])
 def home():
     cgpa = None
+
     if request.method == "POST":
         sgpas = request.form.getlist("sgpa")
-        sgpas = [float(value) for value in sgpas if value]
-        if sgpas:
-            cgpa = round(sum(sgpas) / len(sgpas), 2)
+        credits = request.form.getlist("credit")
+
+        sgpas = [float(s) if s else 0 for s in sgpas]
+        credits = [float(c) if c else 0 for c in credits]
+
+        # If no credits are entered, calculate the simple average.
+        if sum(credits) == 0:
+            valid_sgpas = [s for s in sgpas if s > 0]
+            if valid_sgpas:
+                cgpa = round(sum(valid_sgpas) / len(valid_sgpas), 2)
+        else:
+            # Calculate the credit-weighted CGPA.
+            total_points = sum(
+                sgpas[i] * credits[i]
+                for i in range(min(len(sgpas), len(credits)))
+            )
+            total_credits = sum(credits)
+
+            if total_credits > 0:
+                cgpa = round(total_points / total_credits, 2)
+
     return render_template("body.html", cgpa=cgpa)
 
 
